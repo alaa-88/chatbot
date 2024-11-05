@@ -69,7 +69,7 @@ def log_gemini_model(user_message, bot_response, category, confidence):
             conda_env={
                 "channels": ["defaults"],
                 "dependencies": [
-                    "python=3.8",
+                    "python=3.9",
                     "google-generativeai",  # Ensure this package is included in the conda environment
                     "mlflow",
                 ],
