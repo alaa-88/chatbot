@@ -3,3 +3,17 @@ google-generativeai
 azure-ai-textanalytics
 azure-core
 mlflow
+pyarabic
+arabic_reshaper
+python-bidi
+azure-ai-textanalytics
+datasets
+evaluate
+rouge_score
+loralib
+evaluate
+accelerate
+bitsandbytes
+trl
+peft
+transformers
