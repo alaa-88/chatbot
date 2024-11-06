@@ -7,18 +7,17 @@ import mlflow
 import mlflow.pytorch
 from dotenv import load_dotenv
 
-load_dotenv()
 # Configure the Gemini API
 st.title("Chezlong - Arabic Mental Health Chatbot")
-genai_api_key = os.getenv('GOOGLE_API_KEY')
+genai_api_key = os.environ['GOOGLE_API_KEY']
 genai.configure(api_key=genai_api_key)
 model = genai.GenerativeModel('gemini-pro')
 
 # Configure Azure Text Analytics for intent classification
-ai_endpoint = os.getenv('AI_ENDPOINT')
-ai_key = os.getenv('AI_KEY')
-project_name = os.getenv('PROJECT_NAME')
-deployment_name = os.getenv('DEPLOYMENT_NAME')
+ai_endpoint = os.environ['AI_ENDPOINT']
+ai_key = os.environ['AI_KEY']
+project_name = os.environ['PROJECT_NAME']
+deployment_name = os.environ['DEPLOYMENT_NAME']
 credential = AzureKeyCredential(ai_key)
 ai_client = TextAnalyticsClient(endpoint=ai_endpoint, credential=credential)
 
