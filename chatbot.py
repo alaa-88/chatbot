@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 # Configure the Gemini API
-st.title("Chezlong - Arabic Mental Health Chatbot")
+st.title("Chatlong - Arabic Mental Health Chatbot")
 genai_api_key = os.getenv('GOOGLE_API_KEY')
 genai.configure(api_key=genai_api_key)
 model = genai.GenerativeModel('gemini-pro')
