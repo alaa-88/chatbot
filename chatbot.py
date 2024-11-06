@@ -5,30 +5,43 @@ from azure.core.credentials import AzureKeyCredential
 from azure.ai.textanalytics import TextAnalyticsClient
 import mlflow
 import mlflow.pyfunc
+from dotenv import load_dotenv
 
-# Initialize Streamlit and API configurations
+load_dotenv()
+# Configure the Gemini API
 st.title("Chezlong - Arabic Mental Health Chatbot")
-os.environ['GOOGLE_API_KEY'] = "AIzaSyCAohxd0-C1bhSIC05p7xh03Gi0OLVAcnk"
-genai.configure(api_key=os.environ['GOOGLE_API_KEY'])
-gemini_model = genai.GenerativeModel('gemini-pro')
+genai_api_key = os.getenv('GOOGLE_API_KEY')
+genai.configure(api_key=genai_api_key)
+model = genai.GenerativeModel('gemini-pro')
 
-AI_ENDPOINT = 'https://sentimentanalysis10.cognitiveservices.azure.com/'
-AI_KEY = '4kyIh8KGdZYB9j9Yj71gT09yOE3x46rXQpfXilONXKm8CFL7ydK6JQQJ99AJACYeBjFXJ3w3AAAaACOGjCS5'
-credential = AzureKeyCredential(AI_KEY)
-ai_client = TextAnalyticsClient(endpoint=AI_ENDPOINT, credential=credential)
+# Configure Azure Text Analytics for intent classification
+ai_endpoint = os.getenv('AI_ENDPOINT')
+ai_key = os.getenv('AI_KEY')
+project_name = os.getenv('PROJECT_NAME')
+deployment_name = os.getenv('DEPLOYMENT_NAME')
+credential = AzureKeyCredential(ai_key)
+ai_client = TextAnalyticsClient(endpoint=ai_endpoint, credential=credential)
 
-# Classification function using Azure's Text Analytics
+ # Function to classify user input into a category
 def classify_text(query):
-    batched_documents = [query]
-    operation = ai_client.begin_single_label_classify(
-        batched_documents, project_name="MentalHealth10", deployment_name="MentalHealth"
-    )
-    document_results = operation.result()
-    for classification_result in document_results:
-        if classification_result.kind == "CustomDocumentClassification":
-            classification = classification_result.classifications[0]
-            return classification.category, classification.confidence_score
-    return None, None
+    try:
+        batched_documents = [query]
+        operation = ai_client.begin_single_label_classify(
+            batched_documents,
+            project_name=project_name,
+            deployment_name=deployment_name
+        )
+        document_results = operation.result()
+
+        # Extract classification result
+        for classification_result in document_results:
+            if classification_result.kind == "CustomDocumentClassification":
+                classification = classification_result.classifications[0]
+                return classification.category, classification.confidence_score
+            elif classification_result.is_error:
+                return None, classification_result.error.message
+    except Exception as ex:
+        return None, str(ex)
 
 # Define a base prompt for the bot
 base_prompt = (
@@ -92,7 +105,7 @@ for message in st.session_state.messages:
 # Chat handling and bot response
 def llm_function(query, category):
     prompt = base_prompt.format(category=category)
-    response = gemini_model.generate_content(f"{prompt}\n{query}")
+    response = model.generate_content(f"{prompt}\n{query}")
 
     # Add responses to chat history
     st.session_state.messages.append({"role": "user", "content": query})

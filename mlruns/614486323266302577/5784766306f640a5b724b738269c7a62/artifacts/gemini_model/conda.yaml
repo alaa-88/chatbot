@@ -1,0 +1,9 @@
+channels:
+- defaults
+dependencies:
+- python=3.8
+- google-generativeai
+- mlflow
+- pip:
+  - mlflow==2.17.2
+name: gemini_env

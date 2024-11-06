@@ -1,0 +1,17 @@
+artifact_path: gemini_model
+flavors:
+  python_function:
+    cloudpickle_version: 3.1.0
+    code: null
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.pyfunc.model
+    python_model: python_model.pkl
+    python_version: 3.9.4
+    streamable: false
+mlflow_version: 2.17.2
+model_size_bytes: 1938
+model_uuid: 8f6f6347ded74646bcbba1b02152ec53
+run_id: 5784766306f640a5b724b738269c7a62
+utc_time_created: '2024-11-05 21:02:00.527299'

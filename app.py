@@ -5,20 +5,22 @@ from azure.core.credentials import AzureKeyCredential
 from azure.ai.textanalytics import TextAnalyticsClient
 import mlflow
 import mlflow.pytorch
+from dotenv import load_dotenv
 
+load_dotenv()
 # Configure the Gemini API
 st.title("Chezlong - Arabic Mental Health Chatbot")
-os.environ['GOOGLE_API_KEY'] = "AIzaSyCAohxd0-C1bhSIC05p7xh03Gi0OLVAcnk"
-genai.configure(api_key=os.environ['GOOGLE_API_KEY'])
+genai_api_key = os.getenv('GOOGLE_API_KEY')
+genai.configure(api_key=genai_api_key)
 model = genai.GenerativeModel('gemini-pro')
 
 # Configure Azure Text Analytics for intent classification
-AI_ENDPOINT = 'https://sentimentanalysis10.cognitiveservices.azure.com/'
-AI_KEY = '4kyIh8KGdZYB9j9Yj71gT09yOE3x46rXQpfXilONXKm8CFL7ydK6JQQJ99AJACYeBjFXJ3w3AAAaACOGjCS5'
-PROJECT_NAME = 'MentalHealth10'
-DEPLOYMENT_NAME = 'MentalHealth'
-credential = AzureKeyCredential(AI_KEY)
-ai_client = TextAnalyticsClient(endpoint=AI_ENDPOINT, credential=credential)
+ai_endpoint = os.getenv('AI_ENDPOINT')
+ai_key = os.getenv('AI_KEY')
+project_name = os.getenv('PROJECT_NAME')
+deployment_name = os.getenv('DEPLOYMENT_NAME')
+credential = AzureKeyCredential(ai_key)
+ai_client = TextAnalyticsClient(endpoint=ai_endpoint, credential=credential)
 
 # Function to classify user input into a category
 def classify_text(query):
@@ -26,8 +28,8 @@ def classify_text(query):
         batched_documents = [query]
         operation = ai_client.begin_single_label_classify(
             batched_documents,
-            project_name=PROJECT_NAME,
-            deployment_name=DEPLOYMENT_NAME
+            project_name=project_name,
+            deployment_name=deployment_name
         )
         document_results = operation.result()
 
