@@ -5,7 +5,7 @@
 The goal of this project is to develop an Arabic mental health chatbot named Chatlong. This chatbot aims to provide supportive conversations and guidance to users while acknowledging their mental state. It utilizes natural language processing (NLP) techniques to understand user inputs, classifies them using Azure Text Analytics, and generates contextually appropriate responses using a fine-tuned Meta-Llama-3-8B-Instruct model.
 
 
-##### Check It Out!: [Chatlong - Arabic Mental Health Chatbot Streamlit App](https://huggingface.co/spaces/mohamed517/CHATBOT)  
+##### Check It Out!: [Chatlong - Arabic Mental Health Chatbot Streamlit App](https://chatlong-fclzmupbxfnpmvtrkng5qr.streamlit.app/)  
 
 ## **Usage Instructions**:
 
